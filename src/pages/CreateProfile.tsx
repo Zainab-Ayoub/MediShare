@@ -115,7 +115,7 @@ export default function CreateProfile() {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="col-span-2">
                 <label className="input-label">Full Name</label>
-                <input className="input-field text-lg" value={basic.fullName} onChange={e => setBasic({...basic, fullName: e.target.value})} placeholder="Jane Doe" autoFocus />
+                <input className="input-field text-lg" value={basic.fullName} onChange={e => setBasic({...basic, fullName: e.target.value})} placeholder="Your Name" autoFocus />
               </div>
               <div>
                 <label className="input-label">Blood Type</label>
