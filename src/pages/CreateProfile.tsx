@@ -1,4 +1,5 @@
 import { useState } from 'react';
+const [isSaving, setIsSaving] = useState(false);
 import { useNavigate } from 'react-router-dom';
 import { useProfileStore, MedicalItem } from '../stores/profileStore';
 import { ShieldCheck, Plus, FileText, Pill, Stethoscope, User, Save, ChevronRight } from 'lucide-react';
@@ -30,14 +31,21 @@ export default function CreateProfile() {
     setTempInput({ title: '', details: '', date: '' });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    createProfile({
-      ...basic,
-      allergies: basic.allergies.split(',').map(s => s.trim()).filter(Boolean),
-      medications: meds, reports, history: diagnoses
-    });
-    navigate('/dashboard');
+  const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsSaving(true);
+        
+      // Simulate Qubic Hashing & Network Delay (2 seconds)
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      createProfile({
+          ...basic,
+          allergies: basic.allergies.split(',').map(s => s.trim()).filter(Boolean),
+          medications: meds, reports, history: diagnoses
+      });
+        
+      setIsSaving(false);
+      navigate('/dashboard');
   };
 
   return (
@@ -66,8 +74,21 @@ export default function CreateProfile() {
           </nav>
         </div>
 
-        <button onClick={handleSubmit} className="w-full bg-white text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors">
-          <Save size={18} /> Save to Qubic
+        <button 
+            onClick={handleSubmit} 
+            disabled={isSaving}
+            className="w-full bg-white text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors disabled:opacity-50"
+            >
+            {isSaving ? (
+                <>
+                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                Hashing to Qubic...
+                </>
+            ) : (
+                <>
+                <Save size={18} /> Save to Qubic
+                </>
+            )}
         </button>
       </div>
 
