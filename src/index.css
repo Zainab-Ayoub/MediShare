@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  @apply bg-[#050505] text-gray-200 font-sans antialiased overflow-hidden; /* Prevent body scroll */
+  background-image: radial-gradient(#222 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* --- DARK CYBERPUNK THEME --- */
+
+.glass-panel {
+  @apply bg-[#0a0a0a]/80 backdrop-blur-md border border-white/10 rounded-xl shadow-2xl;
+}
+
+.input-field {
+  @apply w-full bg-[#151515] border border-white/10 rounded-lg px-4 py-3 text-sm text-white transition-all;
+  @apply placeholder:text-gray-600;
+  @apply focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50;
+}
+
+.input-label {
+  @apply text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 block ml-1;
+}
+
+.tab-btn {
+  @apply px-4 py-2 text-sm font-medium text-gray-400 rounded-lg transition-all border border-transparent;
+}
+.tab-btn.active {
+  @apply bg-white/10 text-white border-white/10 shadow-inner;
+}
+
+/* Scrollbar styling for internal panels */
+.custom-scroll {
+  overflow-y: auto;
+}
+.custom-scroll::-webkit-scrollbar { width: 4px; }
+.custom-scroll::-webkit-scrollbar-track { bg: transparent; }
+.custom-scroll::-webkit-scrollbar-thumb { @apply bg-white/20 rounded-full; }
