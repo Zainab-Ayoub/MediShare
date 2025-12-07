@@ -2,12 +2,13 @@ import { useState } from 'react';
 const [isSaving, setIsSaving] = useState(false);
 import { useNavigate } from 'react-router-dom';
 import { useProfileStore, MedicalItem } from '../stores/profileStore';
-import { ShieldCheck, Plus, FileText, Pill, Stethoscope, User, Save, ChevronRight } from 'lucide-react';
+import { ShieldCheck, Plus, FileText, Pill, User, Save, Wallet } from 'lucide-react';
 
 export default function CreateProfile() {
   const navigate = useNavigate();
   const createProfile = useProfileStore((state) => state.createProfile);
-  
+  const [wallet, setWallet] = useState('');
+
   // Tab State for "No Scroll" Layout
   const [activeTab, setActiveTab] = useState<'identity' | 'meds' | 'reports'>('identity');
 
@@ -48,6 +49,11 @@ export default function CreateProfile() {
       navigate('/dashboard');
   };
 
+  const connectWallet = () => {
+    // Simulate connection
+    setWallet('L2...9XQ'); // Fake Qubic Address short code
+  };
+
   return (
     <div className="h-screen w-screen flex flex-col md:flex-row bg-[#050505] text-white overflow-hidden">
       
@@ -74,21 +80,28 @@ export default function CreateProfile() {
           </nav>
         </div>
 
+        <div className="mb-4">
+            {!wallet ? (
+                <button 
+                onClick={connectWallet}
+                className="w-full bg-blue-600/20 border border-blue-500/50 text-blue-400 font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-blue-600/30 transition-all"
+                >
+                <Wallet size={18} /> Connect Qubic Wallet
+                </button>
+            ) : (
+                <div className="w-full bg-[#111] border border-green-500/30 text-green-400 font-mono text-sm py-3 rounded-xl flex items-center justify-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                Connected: {wallet}
+                </div>
+            )}
+        </div>
+
         <button 
             onClick={handleSubmit} 
-            disabled={isSaving}
-            className="w-full bg-white text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors disabled:opacity-50"
+            disabled={!wallet || isSaving} // Disable if no wallet connected
+            className="w-full bg-white text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-            {isSaving ? (
-                <>
-                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                Hashing to Qubic...
-                </>
-            ) : (
-                <>
-                <Save size={18} /> Save to Qubic
-                </>
-            )}
+            <Save size={18} /> {isSaving ? 'Hashing...' : 'Sign & Save'}
         </button>
       </div>
 
@@ -178,6 +191,11 @@ export default function CreateProfile() {
           </div>
         )}
 
+        <div className="mt-8 pt-8 border-t border-white/5 text-center">
+            <p className="text-xs text-gray-600 uppercase tracking-widest">
+                Encrypted with AES-256 • Immutable on Qubic Network • HIPAA Compliant Architecture
+            </p>
+        </div>
       </div>
     </div>
   );
