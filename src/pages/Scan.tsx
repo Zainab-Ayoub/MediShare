@@ -11,7 +11,10 @@ export default function Scan() {
   // In a real app, we would fetch the rich data from IPFS using the ID from the QR.
   // For the demo, we peek into our local store to simulate "Fetching from Cloud"
   const localProfile = useProfileStore(state => state.profile);
-
+  const playScanSound = () => {
+    const audio = new Audio('https://www.soundjay.com/buttons/beep-01a.mp3');
+    audio.play().catch(e => console.log("Audio play failed", e));
+  };
   useEffect(() => {
     if (!data) {
       const scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 }, false);
@@ -20,6 +23,7 @@ export default function Scan() {
         try {
           const parsed = JSON.parse(text);
           setData(parsed);
+          playScanSound();
           // Simulate network verify
           setTimeout(() => setVerified(true), 1200);
         } catch (e) { alert("Invalid QR"); window.location.reload(); }
